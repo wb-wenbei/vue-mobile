@@ -1,23 +1,97 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
+
+const Layout = () => import("../views/layout/layout");
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    redirect: "/home"
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/error/403",
+    name: "403",
+    component: () => import(/* webpackChunkName: "403" */ "../views/error/403")
+  },
+  {
+    path: "/error/404",
+    name: "404",
+    component: () => import(/* webpackChunkName: "404" */ "../views/error/404")
+  },
+  {
+    path: "/error/500",
+    name: "500",
+    component: () => import(/* webpackChunkName: "500" */ "../views/error/500")
+  },
+  {
+    path: "/login",
+    name: "Login",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "login" */ "../views/login/login")
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: () =>
+      import(/* webpackChunkName: "home" */ "../views/home/home"),
+    meta: {
+      code: ""
+    }
+  },
+  {
+    path: "/",
+    component: Layout,
+    children: [
+      {
+        path: "/mine",
+        name: "Mine",
+        component: () =>
+          import(/* webpackChunkName: "mine" */ "../views/mine/mine"),
+        meta: {
+          title: "个人中心",
+          code: ""
+        }
+      },
+      {
+        path: "/eventReport",
+        name: "EventReport",
+        component: () =>
+          import(
+            /* webpackChunkName: "eventReport" */ "../views/eventReport/eventReport"
+          ),
+        meta: {
+          title: "卫情上报",
+          code: ""
+        }
+      },
+      {
+        path: "/healthReport",
+        name: "HealthReport",
+        component: () =>
+          import(
+            /* webpackChunkName: "healthReport" */ "../views/healthReport/healthReport"
+          ),
+        meta: {
+          title: "健康上报",
+          code: ""
+        }
+      },
+      {
+        path: "/exchange",
+        name: "Exchange",
+        component: () =>
+          import(
+            /* webpackChunkName: "exchange" */ "../views/exchange/exchange"
+          ),
+        meta: {
+          title: "积分兑换",
+          code: ""
+        }
+      }
+    ]
   }
 ];
 
@@ -25,6 +99,29 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+const whiteList = ["/login", "/error/403", "/error/404", "/error/500"];
+
+router.beforeEach((to, from, next) => {
+  if (whiteList.includes(to.path)) {
+    next();
+    return;
+  }
+  let token = store.state.token;
+  let permission = store.state.permission;
+  if (!token || permission.length === 0) {
+    next({ path: "/login" });
+    return;
+  }
+  if (
+    (permission.length && to.meta.code && permission.includes(to.meta.code)) ||
+    to.meta.code === ""
+  ) {
+    next();
+  } else {
+    router.push({ path: "/error/403" });
+  }
 });
 
 export default router;
