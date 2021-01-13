@@ -33,18 +33,19 @@ const routes = [
       import(/* webpackChunkName: "login" */ "../views/login/login")
   },
   {
-    path: "/home",
-    name: "Home",
-    component: () =>
-      import(/* webpackChunkName: "home" */ "../views/home/home"),
-    meta: {
-      code: ""
-    }
-  },
-  {
     path: "/",
     component: Layout,
     children: [
+      {
+        path: "/home",
+        name: "Home",
+        component: () =>
+          import(/* webpackChunkName: "home" */ "../views/home/home"),
+        meta: {
+          title: "中航环卫",
+          code: ""
+        }
+      },
       {
         path: "/mine",
         name: "Mine",
@@ -96,7 +97,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  // mode: "history",
   base: process.env.BASE_URL,
   routes
 });

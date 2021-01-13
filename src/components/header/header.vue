@@ -30,6 +30,7 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
+  padding-top: 20px;
 
   .header-title {
     font-size: 18px;
