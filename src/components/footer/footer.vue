@@ -50,7 +50,7 @@ export default {
     flex: 1;
     height: 100%;
     line-height: 50px;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     color: rgba(0, 0, 0, 0.85);
 

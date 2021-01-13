@@ -112,9 +112,10 @@ export default {
   .home-header {
     background: linear-gradient(to right, #32add6, #21de9c);
     ::v-deep {
-      .van-nav-bar__content {
+      .van-nav-bar {
         background: linear-gradient(to right, #32add6, #21de9c);
       }
+
       .van-icon {
         color: white;
         font-size: 20px;
