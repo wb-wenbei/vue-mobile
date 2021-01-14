@@ -23,9 +23,9 @@ const getMenuCode = menus => {
   let menuC = flatArr(JSON.parse(JSON.stringify(menus)));
   let result = [];
   menuC.length &&
-  menuC.forEach(item => {
-    result.push(item.code);
-  });
+    menuC.forEach(item => {
+      result.push(item.code);
+    });
   return result;
 };
 

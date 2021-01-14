@@ -103,7 +103,7 @@ export default {
 .login-content {
   height: 100%;
   position: relative;
-  padding: 16px;
+  padding: @padding-md;
 
   .background {
     position: absolute;
@@ -123,10 +123,10 @@ export default {
     background: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 16px;
-    padding: 16px 8px;
+    padding: @padding-md @padding-xs;
 
     .form-item {
-      padding: 8px 16px;
+      padding: @padding-xs @padding-md;
     }
   }
 }

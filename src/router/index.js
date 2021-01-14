@@ -91,6 +91,28 @@ const routes = [
           title: "积分兑换",
           code: ""
         }
+      },
+      {
+        path: "/message",
+        name: "Message",
+        component: () =>
+          import(/* webpackChunkName: "message" */ "../views/message/message"),
+        meta: {
+          title: "消息中心",
+          code: ""
+        }
+      },
+      {
+        path: "/message/detail",
+        name: "MessageDetail",
+        component: () =>
+          import(
+            /* webpackChunkName: "messageDetail" */ "../views/message/detail"
+          ),
+        meta: {
+          title: "消息详情",
+          code: ""
+        }
       }
     ]
   }

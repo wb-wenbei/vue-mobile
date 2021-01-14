@@ -128,7 +128,7 @@ export default {
   }
 
   .content {
-    padding: 0 16px;
+    padding: 0 @padding-md;
     height: 100%;
     overflow: auto;
   }
