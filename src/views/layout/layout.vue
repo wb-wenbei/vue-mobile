@@ -110,10 +110,10 @@ export default {
   background: #f2f2f2;
 
   .home-header {
-    background: linear-gradient(to right, #32add6, #21de9c);
+    background: @gradient-green;
     ::v-deep {
       .van-nav-bar {
-        background: linear-gradient(to right, #32add6, #21de9c);
+        background: @gradient-green;
       }
 
       .van-icon {

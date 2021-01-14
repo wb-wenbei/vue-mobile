@@ -50,9 +50,8 @@ export default {
     flex: 1;
     height: 100%;
     line-height: 50px;
-    font-size: 16px;
+    font-size: @font-size-lg;
     text-align: center;
-    color: rgba(0, 0, 0, 0.85);
 
     &.active {
       font-weight: bold;

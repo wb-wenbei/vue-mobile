@@ -58,10 +58,11 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        lessOptions: {
-          modifyVars: {
-            hack: `true; @import "styles/vant-theme.less";`
-          }
+        modifyVars: {
+          hack: `true; @import "${path.join(
+            __dirname,
+            "./src/styles/theme.less"
+          )}";`
         }
       },
       postcss: {
@@ -76,7 +77,7 @@ module.exports = {
             selectorBlackList: [".ignore", ".hairlines"], //不进行转换的css选择器，继续使用原有单位
             minPixelValue: 1, //设置最小的转换数值
             mediaQuery: false, //设置媒体查询里的单位是否需要转换单位
-            replace: true, //是否直接更换属性值，而不添加备用属性
+            replace: true //是否直接更换属性值，而不添加备用属性
             // exclude: [/node_modules/] //忽略某些文件夹下的文件
           })
         ]

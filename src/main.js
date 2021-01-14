@@ -3,14 +3,12 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-import Vant from "vant";
-import "vant/lib/index.css";
-import "./styles/index.less";
+import { loadComponents } from "./config/vant";
+loadComponents(Vue);
 
+import "./styles/index.less";
 import "./icons";
 import "./filters/index";
-
-Vue.use(Vant);
 
 Vue.config.productionTip = false;
 

@@ -31,7 +31,7 @@
         <div class="form-item">
           <van-button
             block
-            class="default-btn border-radius-4"
+            class="default-btn border-radius-md"
             native-type="submit"
             :loading="loading"
             loading-type="spinner"
@@ -103,9 +103,6 @@ export default {
 .login-content {
   height: 100%;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 16px;
 
   .background {
@@ -113,18 +110,19 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    height: 40%;
+    height: 45%;
     background: url("../../assets/login_bg.png") center / cover no-repeat;
   }
 
   .login-form {
-    width: 100%;
+    position: absolute;
+    top: 30%;
+    left: 5%;
+    width: 90%;
     min-height: 200px;
-    z-index: 2;
     background: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 16px;
-    margin-bottom: 20%;
     padding: 16px 8px;
 
     .form-item {
