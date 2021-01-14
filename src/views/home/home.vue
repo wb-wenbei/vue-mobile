@@ -12,7 +12,7 @@
       iconClass="ellipsis-v"
       @iconClick="messageClick"
     ></message-item>
-    <div class="card" @click="weatherShow = true">
+    <div class="card">
       <weather-card></weather-card>
     </div>
     <div class="card">
@@ -39,19 +39,19 @@
       position="top"
       :style="{ height: '100%' }"
     >
-      <weather-page></weather-page>
+      <!--      <weather-page></weather-page>-->
     </van-popup>
   </div>
 </template>
 
 <script>
 import WeatherCard from "@/components/weather/weatherCard";
-import WeatherPage from "@/components/weather/weatherPage";
 import SignCard from "./components/signCard/signCard";
 import MessageItem from "@/views/message/components/messageItem";
+
 export default {
   name: "Home",
-  components: { WeatherCard, WeatherPage, SignCard, MessageItem },
+  components: { WeatherCard, SignCard, MessageItem },
   data() {
     return {
       title: "中航环卫",
