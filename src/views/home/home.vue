@@ -12,7 +12,7 @@
       iconClass="ellipsis-v"
       @iconClick="messageClick"
     ></message-item>
-    <div class="card">
+    <div class="card" style="min-height: 126px">
       <weather-card></weather-card>
     </div>
     <div class="card">

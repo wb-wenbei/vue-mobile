@@ -13,7 +13,7 @@ export default {
       window.WIDGET = {
         CONFIG: {
           layout: 1,
-          width: "342",
+          width: "400", //通过css 样式覆盖宽度达到适配效果
           height: "126",
           background: 1,
           dataColor: "FFFFFF",
