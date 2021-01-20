@@ -2,7 +2,8 @@ const state = {
   token: "",
   customerId: "",
   permission: [],
-  userInfo: {}
+  userInfo: {},
+  eventType: 1
 };
 
 export default state;

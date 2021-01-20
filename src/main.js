@@ -9,6 +9,7 @@ loadComponents(Vue);
 import "./styles/index.less";
 import "./icons";
 import "./filters/index";
+import "./config/remember";
 
 Vue.config.productionTip = false;
 

@@ -1,10 +1,10 @@
 <template>
   <div class="layout">
-    <home-header
-      class="home-header"
-      :title="title"
-      :leftArrow="leftArrow"
-    ></home-header>
+    <home-header class="home-header" :title="title" :leftArrow="leftArrow">
+      <template v-if="switchHeader" v-slot:title>
+        <header-switch v-model="eventType"></header-switch>
+      </template>
+    </home-header>
     <div
       ref="layout-content"
       class="content"
@@ -21,18 +21,21 @@
 
 <script>
 import HomeHeader from "@/components/header/header";
+import HeaderSwitch from "@/components/header/headerSwitch";
 import HomeFooter from "@/components/footer/footer";
 
 export default {
   name: "layout",
-  components: { HomeHeader, HomeFooter },
+  components: { HomeHeader, HeaderSwitch, HomeFooter },
   data() {
     return {
       title: "",
       active: "",
       leftArrow: true,
+      switchHeader: false,
       clientWidth: 375,
       minWidth: 50,
+      eventType: "",
       touch: {}
     };
   },
@@ -43,9 +46,16 @@ export default {
       handler(v) {
         this.active = v.name || "other";
         this.title = v.meta.title || "";
+        this.switchHeader = v.meta.switchHeader || false;
         this.leftArrow = v.name !== "Home";
       }
+    },
+    eventType(v) {
+      this.$store.commit("SET_EVENT_TYPE", v);
     }
+  },
+  created() {
+    this.eventType = this.$store.state.eventType;
   },
   mounted() {
     this.clientWidth = this.$refs["layout-content"].clientWidth;
@@ -109,26 +119,7 @@ export default {
   padding-bottom: 50px;
   background: #f2f2f2;
 
-  .home-header {
-    background: @gradient-green;
-    ::v-deep {
-      .van-nav-bar {
-        background: @gradient-green;
-      }
-
-      .van-icon {
-        color: white;
-        font-size: 20px;
-      }
-
-      .header-title {
-        color: white;
-      }
-    }
-  }
-
   .content {
-    padding: 0 @padding-md;
     height: 100%;
     overflow: auto;
   }

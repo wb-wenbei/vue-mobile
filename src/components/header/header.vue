@@ -29,11 +29,28 @@ export default {
 .header {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   padding-top: 20px;
+  background: @gradient-green;
 
   .header-title {
     font-size: 18px;
+  }
+
+  ::v-deep {
+    .van-nav-bar {
+      background: @gradient-green;
+    }
+
+    .van-icon {
+      color: white;
+      font-size: 20px;
+    }
+
+    .header-title {
+      color: white;
+    }
   }
 }
 </style>

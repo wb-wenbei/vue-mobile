@@ -57,6 +57,18 @@ const routes = [
         }
       },
       {
+        path: "/schedule",
+        name: "Schedule",
+        component: () =>
+          import(
+            /* webpackChunkName: "schedule" */ "../views/schedule/schedule"
+          ),
+        meta: {
+          title: "查看排班",
+          code: ""
+        }
+      },
+      {
         path: "/eventReport",
         name: "EventReport",
         component: () =>
@@ -65,7 +77,8 @@ const routes = [
           ),
         meta: {
           title: "卫情上报",
-          code: ""
+          code: "",
+          switchHeader: true
         }
       },
       {
@@ -81,14 +94,14 @@ const routes = [
         }
       },
       {
-        path: "/exchange",
-        name: "Exchange",
+        path: "/healthReport/report",
+        name: "HealthReportReport",
         component: () =>
           import(
-            /* webpackChunkName: "exchange" */ "../views/exchange/exchange"
+            /* webpackChunkName: "HealthReportReport" */ "../views/healthReport/reportForm"
           ),
         meta: {
-          title: "积分兑换",
+          title: "基本特征",
           code: ""
         }
       },
@@ -111,6 +124,28 @@ const routes = [
           ),
         meta: {
           title: "消息详情",
+          code: ""
+        }
+      },
+      {
+        path: "/credits",
+        name: "Credits",
+        component: () =>
+          import(/* webpackChunkName: "credits" */ "../views/credits/credits"),
+        meta: {
+          title: "积分明细",
+          code: ""
+        }
+      },
+      {
+        path: "/credits/exchange",
+        name: "CreditsExchange",
+        component: () =>
+          import(
+            /* webpackChunkName: "CreditsExchange" */ "../views/credits/exchange"
+          ),
+        meta: {
+          title: "积分兑换",
           code: ""
         }
       }

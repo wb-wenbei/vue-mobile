@@ -1,9 +1,11 @@
 <template>
-  <page-list :api="pageAPI" :params="params">
-    <template #default="{ item }">
-      <message-item :data="item" @iconClick="rowClick"></message-item>
-    </template>
-  </page-list>
+  <div class="message-content">
+    <page-list :api="pageAPI" :params="params">
+      <template #default="{ item }">
+        <message-item :data="item" @iconClick="rowClick"></message-item>
+      </template>
+    </page-list>
+  </div>
 </template>
 
 <script>
@@ -28,4 +30,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.message-content {
+  padding: 0 @padding-md;
+}
+</style>

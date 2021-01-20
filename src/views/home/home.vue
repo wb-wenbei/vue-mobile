@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="card">
+  <div class="home-content">
+    <div class="common-card padding-0">
       <van-swipe class="swipe-content" :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <img v-lazy="image" />
@@ -12,17 +12,17 @@
       iconClass="ellipsis-v"
       @iconClick="messageClick"
     ></message-item>
-    <div class="card" style="min-height: 126px">
+    <div class="common-card padding-0" style="min-height: 126px">
       <weather-card></weather-card>
     </div>
-    <div class="card">
+    <div class="common-card padding-0">
       <div class="card-title style-title">
         <div>签到领积分</div>
-        <div class="style-sub-title">积分明细</div>
+        <div class="style-sub-title" @click="toCredits">积分明细</div>
       </div>
       <sign-card></sign-card>
     </div>
-    <div class="card">
+    <div class="common-card padding-0">
       <div class="card-title style-title">员工关爱</div>
       <van-grid :border="false" :column-num="4">
         <van-grid-item v-for="menu in menus" :key="menu.id" :to="menu.link">
@@ -73,7 +73,7 @@ export default {
           id: 2,
           title: "积分兑换",
           icon: "jiaosequanxian",
-          link: "/exchange",
+          link: "/credits/exchange",
           bgColor: "#F9C644"
         },
         {
@@ -87,6 +87,9 @@ export default {
     };
   },
   methods: {
+    toCredits() {
+      this.$router.push({ path: "/credits" });
+    },
     messageClick() {
       this.$router.push({ path: "/message" });
     }
@@ -95,13 +98,16 @@ export default {
 </script>
 
 <style scoped lang="less">
-.card {
-  background: #ffffff;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  margin: @margin-md 0;
-  min-height: 60px;
+.home-content {
+  padding: 0 @padding-md;
+}
+
+.common-card {
   overflow: hidden;
+
+  &.padding-0 {
+    padding: 0;
+  }
 
   .card-title {
     display: flex;

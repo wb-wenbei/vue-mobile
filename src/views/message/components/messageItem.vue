@@ -1,5 +1,5 @@
 <template>
-  <div class="message-item" @click="rowClick(data)">
+  <div class="common-card" @click="rowClick(data)">
     <div class="item-image">
       <svg-icon class="image-icon" icon-class="jiaosequanxian" />
     </div>
@@ -37,13 +37,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.message-item {
-  background: #ffffff;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  margin: @margin-md 0;
-  padding: @padding-sm;
-  min-height: 60px;
+.common-card {
   overflow: hidden;
   display: flex;
   align-items: center;

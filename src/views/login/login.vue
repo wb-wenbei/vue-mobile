@@ -90,10 +90,7 @@ export default {
       this.$router.push("/");
     },
     setRemember() {
-      if (this.rememberMe) {
-        //todo 自动登录逻辑处理
-        console.log("自动登录");
-      }
+      localStorage.setItem("login_remember_me", this.rememberMe);
     }
   }
 };

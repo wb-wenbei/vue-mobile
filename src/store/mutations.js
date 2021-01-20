@@ -55,6 +55,9 @@ const mutations = {
   },
   REMOVE_USER_INFO: state => {
     state.userInfo = {};
+  },
+  SET_EVENT_TYPE: (state, eventType) => {
+    state.eventType = eventType;
   }
 };
 
