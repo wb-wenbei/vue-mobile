@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["healthReport"],{"8b0c":function(e,t,n){"use strict";n.r(t);var a=function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[e._v("健康上报")])},r=[],c={name:"HealthReport"},l=c,o=n("2877"),p=Object(o["a"])(l,a,r,!1,null,"56a4ab11",null);t["default"]=p.exports}}]);
-//# sourceMappingURL=healthReport.d0a6092e.js.map

@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["exchange"],{"23a2":function(e,n,a){"use strict";a.r(n);var t=function(){var e=this,n=e.$createElement,a=e._self._c||n;return a("div",[e._v("积分兑换")])},c=[],r={name:"Exchange"},s=r,u=a("2877"),i=Object(u["a"])(s,t,c,!1,null,"ea381f8e",null);n["default"]=i.exports}}]);
-//# sourceMappingURL=exchange.ae9775da.js.map
