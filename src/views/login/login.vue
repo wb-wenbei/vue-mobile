@@ -31,7 +31,7 @@
         <div class="form-item">
           <van-button
             block
-            class="default-btn border-radius-md"
+            class="default-btn"
             native-type="submit"
             :loading="loading"
             loading-type="spinner"

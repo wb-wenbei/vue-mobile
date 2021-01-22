@@ -1,31 +1,34 @@
 <template>
-  <section class="position">
-    <p>
-      <van-icon :name="editIcons.position" size="20px" />
-      <span class="address">{{ address }}</span>
-      <van-icon
-        class="edit"
-        :name="editIcons.edit"
-        size="20px"
-        @click="mapShow = true"
-      />
-    </p>
+  <div class="position-content">
+    <van-cell is-link>
+      <template #icon>
+        <van-icon :name="editIcons.position" size="20px" />
+      </template>
+      <template #title>
+        <span class="custom-title">{{ address }}</span>
+      </template>
+      <template #right-icon>
+        <van-icon :name="editIcons.edit" size="20px" @click="mapShow = true" />
+      </template>
+    </van-cell>
     <van-popup v-model="mapShow" :style="{ height: '100%', width: '100%' }">
       <div class="map-content">
+        <div class="header"></div>
         <div class="map" id="map"></div>
         <van-button
           class="btn"
           size="small"
           type="primary"
           @click="mapShow = false"
-          >完成</van-button
         >
+          完成
+        </van-button>
         <div class="address-picker">
           <van-picker :columns="addressList" @change="onConfirm" />
         </div>
       </div>
     </van-popup>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -197,55 +200,47 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.position {
-  > p {
-    line-height: 20px;
-    font-size: 14px;
-    color: #333333;
-    position: relative;
-    display: flex;
-    padding-right: 20px;
+<style lang="less" scoped>
+.map-content {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 
-    .address {
-      padding: 0 20px;
-    }
-
-    .edit {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
+  .header {
+    height: 26px;
+    background: @gradient-green;
   }
 
-  .map-content {
-    height: 100%;
-    position: relative;
+  .map {
+    height: calc(100% - 230px);
+    width: 100%;
+  }
 
-    .map {
-      height: calc(100% - 230px);
-      width: 100%;
-    }
+  .btn {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+  }
 
-    .btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
+  .btn-2 {
+    position: absolute;
+    top: 20px;
+    right: 120px;
+  }
 
-    .btn-2 {
-      position: absolute;
-      top: 20px;
-      right: 120px;
-    }
+  .address-picker {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 230px;
+  }
+}
 
-    .address-picker {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 230px;
-    }
+::v-deep {
+  .van-cell__title {
+    padding: 0 8px;
+    text-align: left;
   }
 }
 </style>

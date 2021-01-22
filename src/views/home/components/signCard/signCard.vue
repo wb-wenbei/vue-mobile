@@ -1,6 +1,6 @@
 <template>
   <div class="sign-card">
-    <div class="sign-point">
+    <div class="sign-point" v-if="showLine">
       <div
         v-for="item in signList"
         :key="item.id"
@@ -23,8 +23,16 @@
     </div>
     <div class="sign-detail">
       <div class="point">
-        <div class="point">{{ signPoint }}</div>
+        <div class="point">{{ signPoint.count }}</div>
         <div class="style-sub-text">我的积分</div>
+      </div>
+      <div class="point">
+        <div class="point">{{ signPoint.canGet }}</div>
+        <div class="style-sub-text">今日可领</div>
+      </div>
+      <div class="point">
+        <div class="point">{{ signPoint.hasGet }}</div>
+        <div class="style-sub-text">今日已领</div>
       </div>
       <div class="btn">
         <van-popover
@@ -51,9 +59,16 @@ const ONE_DAY = 1000 * 3600 * 24;
 
 export default {
   name: "signCard",
+  props: {
+    showLine: { type: Boolean, default: false }
+  },
   data() {
     return {
-      signPoint: 4000,
+      signPoint: {
+        count: 4000,
+        canGet: 15,
+        hasGet: 10
+      },
       signPopover: false,
       signList: [
         {

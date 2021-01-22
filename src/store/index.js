@@ -13,7 +13,8 @@ const reducer = val => {
     token: val.token,
     customerId: val.customerId,
     permission: val.permission,
-    userInfo: val.userInfo
+    userInfo: val.userInfo,
+    position: val.position
   };
 };
 

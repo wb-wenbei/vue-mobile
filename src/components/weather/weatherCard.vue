@@ -14,7 +14,7 @@ export default {
         CONFIG: {
           layout: 1,
           width: "400", //通过css 样式覆盖宽度达到适配效果
-          height: "126",
+          height: "134",
           background: 1,
           dataColor: "FFFFFF",
           borderRadius: 5,

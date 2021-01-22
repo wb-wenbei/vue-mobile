@@ -58,6 +58,10 @@ const mutations = {
   },
   SET_EVENT_TYPE: (state, eventType) => {
     state.eventType = eventType;
+  },
+  SET_POSITION: (state, position) => {
+    console.log(111,position)
+    state.position = position;
   }
 };
 

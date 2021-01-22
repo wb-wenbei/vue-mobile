@@ -3,6 +3,7 @@ const state = {
   customerId: "",
   permission: [],
   userInfo: {},
+  position: {},
   eventType: 1
 };
 

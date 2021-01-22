@@ -48,7 +48,7 @@ export default {
     },
     columns: {
       deep: true,
-      handler(v) {
+      handler() {
         this.load();
       }
     }

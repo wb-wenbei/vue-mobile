@@ -82,6 +82,54 @@ const routes = [
         }
       },
       {
+        path: "/eventReport/eventAdd",
+        name: "eventAdd",
+        component: () =>
+          import(
+            /* webpackChunkName: "eventAdd" */ "../views/eventReport/eventAdd"
+          ),
+        meta: {
+          title: "上报",
+          code: ""
+        }
+      },
+      {
+        path: "/eventReport/eventDetail/:id",
+        name: "EventDetail",
+        component: () =>
+          import(
+            /* webpackChunkName: "eventDetail" */ "../views/eventReport/eventDetail"
+          ),
+        meta: {
+          title: "详情",
+          code: ""
+        }
+      },
+      {
+        path: "/eventReport/eventHandleDetail/:id/:distance",
+        name: "issueDetail",
+        component: () =>
+          import(
+            /* webpackChunkName: "eventHandleDetail" */ "../views/eventReport/eventHandleDetail"
+          ),
+        meta: {
+          title: "详情",
+          code: ""
+        }
+      },
+      {
+        path: "/eventReport/eventHandle/:id",
+        name: "eventHandle",
+        component: () =>
+          import(
+            /* webpackChunkName: "eventHandle" */ "../views/eventReport/eventHandle"
+          ),
+        meta: {
+          title: "处理",
+          code: ""
+        }
+      },
+      {
         path: "/healthReport",
         name: "HealthReport",
         component: () =>
