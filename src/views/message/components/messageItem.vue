@@ -45,7 +45,7 @@ export default {
   .item-image {
     height: 18px;
     width: 18px;
-    background: url("../../../assets/icons/通知@3x.png") center / cover
+    background: url("../../../assets/icons/notice@3x.png") center / cover
       no-repeat;
     margin-right: @margin-base;
   }

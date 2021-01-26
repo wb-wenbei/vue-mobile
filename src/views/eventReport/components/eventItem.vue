@@ -31,7 +31,7 @@
               剩{{ Math.abs(data.remainingSeconds / 3600).toFixed(1) }}h
             </span>
             <span class="distance" v-if="data.distance + ''">
-              <img :src="require('@/assets/icons/商家地址库@3x.png')" alt="" />
+              <img :src="require('@/assets/icons/address.png')" alt="" />
               距您{{ data.distance | distance }}
             </span>
             <span class="distance" v-else>无法获取距离</span>
@@ -219,9 +219,9 @@ export default {
       ],
       icon: {},
       imgSrc: [
-        require("@/assets/icons/编辑@3x.png"),
-        require("@/assets/icons/圆角-删除-线@3x.png"),
-        require("@/assets/icons/商家地址库@3x.png")
+        require("@/assets/icons/edit@3x.png"),
+        require("@/assets/icons/delete@3x.png"),
+        require("@/assets/icons/address.png")
       ],
       typeStyle: null,
       showPopup: false,

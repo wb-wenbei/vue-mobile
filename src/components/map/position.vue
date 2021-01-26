@@ -43,8 +43,8 @@ export default {
   data() {
     return {
       editIcons: {
-        edit: require("@/assets/icons/编辑@3x.png"),
-        position: require("@/assets/icons/商家地址库@3x.png")
+        edit: require("@/assets/icons/edit@3x.png"),
+        position: require("@/assets/icons/address.png")
       },
       mapShow: true,
       showPicker: false,
