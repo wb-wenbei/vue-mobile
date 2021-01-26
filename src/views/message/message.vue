@@ -1,6 +1,6 @@
 <template>
   <div class="message-content">
-    <page-list :api="pageAPI" :params="params">
+    <page-list ref="page-list" :api="pageAPI" :params="params">
       <template #default="{ item }">
         <message-item :data="item" @iconClick="rowClick"></message-item>
       </template>
@@ -19,8 +19,17 @@ export default {
   data() {
     return {
       pageAPI,
-      params: {}
+      params: { isWeb: false }
     };
+  },
+  "$store.state.noticeType": {
+    immediate: true,
+    handler(v) {
+      this.params.isQueryNotRead = v === 1;
+      if (this.$refs["page-list"]) {
+        this.$refs["page-list"].onRefresh();
+      }
+    }
   },
   methods: {
     rowClick(data) {
@@ -32,6 +41,16 @@ export default {
 
 <style scoped lang="less">
 .message-content {
-  padding: 0 @padding-md;
+  background: white;
+
+  ::v-deep {
+    .common-card {
+      margin: 0 @margin-md;
+      border-bottom: 1px solid @gray-4;
+      box-shadow: none;
+      border-radius: 0;
+      padding: @padding-md 0;
+    }
+  }
 }
 </style>

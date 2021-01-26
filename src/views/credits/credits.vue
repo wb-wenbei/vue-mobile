@@ -2,7 +2,9 @@
   <div class="credits-content">
     <div class="credits-card">
       <div class="card-header">
-        <div class="credits"><span>4000</span> 积分</div>
+        <div class="credits">
+          <span>{{ detail.totalIntegral }}</span> 积分
+        </div>
         <div class="credits-btn">
           <van-button size="mini" color="white" @click="toExchange">
             积分兑换
@@ -12,13 +14,13 @@
       <div class="card-status">
         <div class="button">
           <div class="button-content">
-            {{ detail.hasReport ? "已签到" : "未签到" }}
+            {{ detail.signInNumber > 0 ? "已签到" : "未签到" }}
           </div>
         </div>
       </div>
       <div class="card-description">
-        今日{{ detail.hasReport ? "已签到" : "未签到" }}，目前项目排名{{
-          detail.sort
+        今日{{ detail.signInNumber > 0 ? "已签到" : "未签到" }}， 目前项目排名{{
+          detail.rank
         }}
       </div>
     </div>
@@ -28,12 +30,13 @@
           <div class="credit-item">
             <div class="item-header">
               <div>
-                {{ item.time || "08:04:33" }} {{ item.title || "上班签到" }}
+                {{ item.createTime | formatTime }}
+                {{ item.integralTypeName || "--" }}
               </div>
               <div class="header-right">+15积分</div>
             </div>
             <div class="item-date style-sub-text">
-              {{ item.date || "2020-01-02" }}
+              {{ item.createTime | formatDate }}
             </div>
           </div>
         </template>
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import { pageAPI } from "../../api/credits";
+import { pageAPI, getIntegralSumAPI } from "../../api/credits";
 import PageList from "@/components/pageList";
 
 export default {
@@ -54,13 +57,22 @@ export default {
       pageAPI,
       params: {},
       detail: {
-        credits: 4000,
-        hasReport: true,
-        sort: 142
+        rank: 2,
+        signInDays: 1,
+        signInNumber: 0,
+        totalIntegral: 110
       }
     };
   },
+  created() {
+    this.loadData();
+  },
   methods: {
+    loadData() {
+      getIntegralSumAPI().then(res => {
+        this.detail = res;
+      });
+    },
     toExchange() {
       this.$router.push({ path: "/credits/exchange" });
     }

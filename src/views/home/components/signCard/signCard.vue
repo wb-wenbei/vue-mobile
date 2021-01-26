@@ -23,15 +23,15 @@
     </div>
     <div class="sign-detail">
       <div class="point">
-        <div class="point">{{ signPoint.count }}</div>
+        <div class="point">{{ signPoint.totalIntegral }}</div>
         <div class="style-sub-text">我的积分</div>
       </div>
       <div class="point">
-        <div class="point">{{ signPoint.canGet }}</div>
+        <div class="point">{{ signPoint.usableIntegral }}</div>
         <div class="style-sub-text">今日可领</div>
       </div>
       <div class="point">
-        <div class="point">{{ signPoint.hasGet }}</div>
+        <div class="point">{{ signPoint.haveAccessToIntegral }}</div>
         <div class="style-sub-text">今日已领</div>
       </div>
       <div class="btn">
@@ -41,35 +41,70 @@
           theme="dark"
           trigger="click"
         >
-          <div class="pop-content">签到领积分+15</div>
+          <div v-if="disabled" class="pop-content">{{ tips }}</div>
           <template #reference>
-            <van-button class="default-btn" size="small" @click="onSign">
+            <van-button
+              class="default-btn"
+              size="small"
+              :disabled="disabled"
+              @click="onSign"
+            >
               签到
             </van-button>
           </template>
         </van-popover>
       </div>
     </div>
+    <van-dialog
+      v-model="showSuccess"
+      :show-confirm-button="false"
+      className="sign-success"
+    >
+      <div class="common-card">
+        <div class="sign-title">恭喜您，签到成功</div>
+        <div class="sign-sub-title">上报健康情况即可再获得积分</div>
+        <div>
+          <van-button
+            round
+            color="#ee0a24"
+            class="sign-btn"
+            size="small"
+            @click="showSuccess = false"
+          >
+            返 回
+          </van-button>
+        </div>
+      </div>
+      <div class="sign-image">
+        <div class="sign-score">+5</div>
+      </div>
+    </van-dialog>
   </div>
 </template>
 
 <script>
+import { allowSignInAPI, signInAPI } from "@/api/credits";
+
 import { toDateFormat } from "@/filters/timeFormat";
 const ONE_DAY = 1000 * 3600 * 24;
 
 export default {
   name: "signCard",
   props: {
-    showLine: { type: Boolean, default: false }
+    showLine: { type: Boolean, default: false },
+    position: { type: Object }
   },
   data() {
     return {
       signPoint: {
-        count: 4000,
+        totalIntegral: 110,
         canGet: 15,
         hasGet: 10
       },
+      disabled: true,
+      tips: "",
       signPopover: false,
+      showSuccess: false,
       signList: [
         {
           id: 1,
@@ -109,23 +144,51 @@ export default {
       ]
     };
   },
+  watch: {
+    position: {
+      deep: true,
+      handler() {
+        this.allowSign();
+      }
+    }
+  },
   created() {
     this.loadData();
   },
   methods: {
-    async loadData() {
-      /*let dataList = await API();
-      dataList.forEach(item => {
-        this.signList.push({
-          id: 1,
-          active: true,
-          time: toDateFormat(, "MM-dd"),
-          showPopover: false,
-          popContent: "无排班"
-        });
+    loadData() {
+      /* getIntegralSumAPI().then(res => {
+        this.signPoint = res;
       });*/
     },
-    onSign() {}
+    allowSign() {
+      allowSignInAPI(this.position).then(res => {
+        this.signPoint = res;
+        switch (res.signInStatus) {
+          case 1:
+            this.disabled = false;
+            break;
+          case 2:
+            this.disabled = true;
+            this.tips = "无法签到！";
+            break;
+          case 3:
+            this.disabled = true;
+            this.tips = "已签到！";
+            break;
+        }
+      });
+    },
+    onSign() {
+      signInAPI(this.position)
+        .then(() => {
+          this.showSuccess = true;
+        })
+        .catch(err => {
+          this.$toast.fail("签到失败！");
+          console.log(err);
+        });
+    }
   }
 };
 </script>
@@ -213,6 +276,52 @@ export default {
 ::v-deep {
   .van-popover__content {
     border-radius: 0;
+  }
+}
+
+.sign-success {
+  padding: 0;
+  background: transparent;
+
+  .common-card {
+    height: 340px;
+    margin: 12px;
+    padding-top: 240px;
+
+    .sign-title {
+      font-size: @font-size-xl;
+      font-weight: bold;
+      color: @red;
+      padding-bottom: @padding-base;
+    }
+
+    .sign-sub-title {
+      font-size: @font-size-md;
+      color: @gray-6;
+      padding-bottom: @padding-xs;
+    }
+
+    .sign-btn {
+      padding: @padding-base @padding-lg;
+    }
+  }
+
+  .sign-image {
+    position: absolute;
+    top: 12px;
+    height: 260px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("../../../../assets/images/sign_success.png") center /
+      contain no-repeat;
+
+    .sign-score {
+      font-size: 48px;
+      color: #fcce30;
+      padding-top: 56px;
+    }
   }
 }
 </style>

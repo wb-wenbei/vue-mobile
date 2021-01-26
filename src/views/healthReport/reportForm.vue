@@ -1,26 +1,34 @@
 <template>
   <div class="report-form">
-    <van-form @submit="onReport">
-      <div v-for="(l, index) in list" :key="l.id" class="form-item">
-        <div class="form-title">{{ index + 1 }}、{{ l.title }}</div>
-        <van-radio-group v-model="form[l.key]">
-          <van-radio
-            v-for="op in l.options"
-            :key="op.id"
-            :name="op.id"
-            icon-size="16px"
-          >
-            {{ op.name }}
-          </van-radio>
-        </van-radio-group>
-      </div>
-
+    <van-form @submit="onSubmit">
+      <template v-if="!disabled">
+        <div v-for="(l, index) in list" :key="l.id" class="form-item">
+          <div class="form-title">
+            {{ index + 1 }}、{{ l.title }}
+            <span v-if="l.required"
+              >(<span class="required">*</span> 必填)</span
+            >
+          </div>
+          <van-radio-group v-model="l.answer">
+            <van-radio
+              v-for="op in l.questionnaireOptionDtoList"
+              :key="op.id"
+              :name="op.id"
+              icon-size="16px"
+            >
+              {{ op.name }}
+            </van-radio>
+          </van-radio-group>
+        </div>
+      </template>
+      <div class="message" v-else>{{ message }}</div>
       <div class="form-item">
         <van-button
           block
           class="default-btn border-radius-md"
           native-type="submit"
           :loading="loading"
+          :disabled="disabled"
           loading-type="spinner"
         >
           上报
@@ -31,105 +39,75 @@
 </template>
 
 <script>
-import { reportAPI } from "@/api/healthReport";
+import {
+  getQuestionnaireAPI,
+  submitQuestionnaireAPI
+} from "@/api/healthReport";
+
+const QUESTION_NAIRE_ID = 1; // 健康问卷
+
 export default {
   name: "ReportForm",
   data() {
     return {
       loading: false,
-      form: {
-        key_1: 1,
-        key_2: 1,
-        key_3: 1,
-        key_4: 2,
-        key_5: 1,
-        key_6: 1,
-        key_7: 1
-      },
-      list: [
-        {
-          id: 1,
-          title: "心跳、是否有不是或者异常",
-          key: "key_1",
-          options: [
-            { id: 1, name: "正常" },
-            { id: 2, name: "不适" }
-          ]
-        },
-        {
-          id: 2,
-          title: "呼吸、是否有不适或者急促现象",
-          key: "key_2",
-          options: [
-            { id: 1, name: "正常" },
-            { id: 2, name: "急促" },
-            { id: 3, name: "困难" }
-          ]
-        },
-        {
-          id: 3,
-          title: "是否存在发烧、咳嗽等现象",
-          key: "key_3",
-          options: [
-            { id: 1, name: "有" },
-            { id: 2, name: "没有" }
-          ]
-        },
-        {
-          id: 4,
-          title: "今日体温",
-          key: "key_4",
-          options: [
-            { id: 1, name: "低烧（<36℃）" },
-            { id: 2, name: "正常（36℃<38℃）" },
-            { id: 3, name: "发烧（>38℃）" }
-          ]
-        },
-        {
-          id: 5,
-          title: "头部，是否有不适或者异常",
-          key: "key_5",
-          options: [
-            { id: 1, name: "正常" },
-            { id: 2, name: "不适" }
-          ]
-        },
-        {
-          id: 6,
-          title: "四肢，是否有不适或者异常",
-          key: "key_6",
-          options: [
-            { id: 1, name: "正常" },
-            { id: 2, name: "不适" }
-          ]
-        },
-        {
-          id: 7,
-          title: "内脏，是否有不适或者异常",
-          key: "key_7",
-          options: [
-            { id: 1, name: "正常" },
-            { id: 2, name: "不适" }
-          ]
-        }
-      ]
+      disabled: true,
+      message: "你今天已经上报信息了",
+      list: []
     };
   },
+  created() {
+    this.loadData();
+  },
   methods: {
-    onReport() {
+    loadData() {
+      getQuestionnaireAPI({ questionnaireId: QUESTION_NAIRE_ID })
+        .then(res => {
+          this.list = res;
+          this.disabled = false;
+        })
+        .catch(err => {
+          this.disabled = true;
+          this.message = err;
+        });
+    },
+    onSubmit() {
+      if (!this.checkForm(this.list)) {
+        this.$toast.fail("请填写完整后提交！");
+        return;
+      }
       this.loading = true;
-      reportAPI(this.form)
+      let titleOptionDtoList = [];
+      this.list.forEach(item => {
+        titleOptionDtoList.push(
+          Object.assign({}, item, { answer: [item.answer] })
+        );
+        item.answer = [item.answer];
+      });
+      submitQuestionnaireAPI({
+        questionnaireId: QUESTION_NAIRE_ID,
+        titleOptionDtoList: titleOptionDtoList
+      })
         .then(() => {
           this.$toast.success("上报成功！");
           this.$router.push("/healthReport");
         })
         .catch(err => {
-          this.$toast.success("上报失败！");
+          this.$toast.fail("上报失败！");
           console.log(err);
         })
         .finally(() => {
           this.loading = false;
         });
+    },
+    checkForm(data) {
+      let result = true;
+      data.forEach(item => {
+        if (item.required && !item.answer && item.answer !== 0) {
+          result = false;
+        }
+      });
+      return result;
     }
   }
 };
@@ -140,7 +118,7 @@ export default {
   background: #ffffff;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   border-radius: @border-radius-lg;
-  margin: 60px 0 @margin-md;
+  margin: 70px @margin-md @margin-md;
   padding: @padding-sm;
   min-height: 60px;
   position: relative;
@@ -148,12 +126,23 @@ export default {
   &::after {
     content: "";
     position: absolute;
-    top: -50px;
+    top: -65px;
     left: 0;
-    height: 60px;
+    height: 70px;
     width: 100%;
     background: url("../../assets/images/health_report_bg.png") center / cover
       no-repeat;
+  }
+
+  .required {
+    color: @red;
+  }
+
+  .message {
+    padding: @padding-md 0;
+    text-align: center;
+    font-size: 16px;
+    color: @gray-6;
   }
 
   .form-item {

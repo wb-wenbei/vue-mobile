@@ -1,52 +1,55 @@
 <template>
-  <div class="home-content">
-    <van-swipe class="swipe-content" :autoplay="3000">
-      <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img v-lazy="image" />
-      </van-swipe-item>
-    </van-swipe>
-    <div class="home-body">
-      <message-item
-        class="message-item"
-        :data="messageItem"
-        iconClass="ellipsis-v"
-        @iconClick="messageClick"
-      ></message-item>
-      <div class="common-card padding-0" style="min-height: 126px">
-        <weather-card></weather-card>
-        <div class="tip-content">
-          <span class="tip-title">小贴士：</span
-          >{{ userInfo.userName }}您好！工作忙碌，注意适时休息。
+  <van-pull-refresh v-model="loading" @refresh="load">
+    <div class="home-content">
+      <van-swipe class="swipe-content" :autoplay="3000">
+        <van-swipe-item v-for="(image, index) in images" :key="index">
+          <img v-if="image" v-lazy="image" />
+          <div v-else class="default-image"></div>
+        </van-swipe-item>
+      </van-swipe>
+      <div class="home-body">
+        <message-item
+          class="message-item"
+          :data="messageItem"
+          iconClass="ellipsis-v"
+          @iconClick="messageClick"
+        ></message-item>
+        <div class="common-card padding-0" style="min-height: 126px">
+          <weather-card></weather-card>
+          <div class="tip-content">
+            <span class="tip-title">小贴士：</span
+            >{{ userInfo.userName }}您好！工作忙碌，注意适时休息。
+          </div>
+        </div>
+        <div class="common-card padding-0">
+          <div class="card-title style-title">
+            <div>签到领积分</div>
+            <div class="style-sub-title" @click="toCredits">积分明细</div>
+          </div>
+          <sign-card :position="position"></sign-card>
+        </div>
+        <div class="common-card padding-0">
+          <div class="card-title style-title">员工关爱</div>
+          <van-grid :border="false" :column-num="4">
+            <van-grid-item v-for="menu in menus" :key="menu.id" :to="menu.link">
+              <div class="menu-content" :style="{ background: menu.bgColor }">
+                <svg-icon class="menu-icon" :icon-class="menu.icon" />
+              </div>
+              <div class="style-sub-title">{{ menu.title }}</div>
+            </van-grid-item>
+          </van-grid>
         </div>
       </div>
-      <div class="common-card padding-0">
-        <div class="card-title style-title">
-          <div>签到领积分</div>
-          <div class="style-sub-title" @click="toCredits">积分明细</div>
-        </div>
-        <sign-card></sign-card>
-      </div>
-      <div class="common-card padding-0">
-        <div class="card-title style-title">员工关爱</div>
-        <van-grid :border="false" :column-num="4">
-          <van-grid-item v-for="menu in menus" :key="menu.id" :to="menu.link">
-            <div class="menu-content" :style="{ background: menu.bgColor }">
-              <svg-icon class="menu-icon" :icon-class="menu.icon" />
-            </div>
-            <div class="style-sub-title">{{ menu.title }}</div>
-          </van-grid-item>
-        </van-grid>
-      </div>
+      <van-popup
+        v-model="weatherShow"
+        closeable
+        position="top"
+        :style="{ height: '100%' }"
+      >
+        <!--      <weather-page></weather-page>-->
+      </van-popup>
     </div>
-    <van-popup
-      v-model="weatherShow"
-      closeable
-      position="top"
-      :style="{ height: '100%' }"
-    >
-      <!--      <weather-page></weather-page>-->
-    </van-popup>
-  </div>
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -55,7 +58,10 @@ import SignCard from "./components/signCard/signCard";
 import MessageItem from "@/views/message/components/messageItem";
 import { getPosition } from "../../components/map/config";
 
+import { pageAPI as messagePageAPI } from "@/api/message";
+
 const POSITION_TIME = 1000 * 10;
+const BANNER_LOCATION = 1; // banner
 
 export default {
   name: "Home",
@@ -65,41 +71,86 @@ export default {
       title: "中航环卫",
       userInfo: this.$store.state.userInfo,
       messageItem: {},
+      loading: false,
       weatherShow: false,
       position: {},
-      images: [
-        "https://img.yzcdn.cn/vant/apple-1.jpg",
-        "https://img.yzcdn.cn/vant/apple-2.jpg"
-      ],
+      images: ["", ""],
       menus: [
         {
           id: 1,
           title: "健康上报",
-          icon: "jiaosequanxian",
+          icon: "menu-health",
           link: "/healthReport",
           bgColor: "#F49541"
         },
         {
           id: 2,
           title: "积分兑换",
-          icon: "jiaosequanxian",
+          icon: "menu-exchange",
           link: "/credits/exchange",
           bgColor: "#F9C644"
         },
         {
           id: 3,
           title: "卫情上报",
-          icon: "jiaosequanxian",
+          icon: "menu-report",
           link: "/eventReport",
           bgColor: "#28B893"
+        },
+        {
+          id: 4,
+          title: "查看排班",
+          icon: "menu-schedule",
+          link: "/schedule",
+          bgColor: "#31ADD6"
         }
       ]
     };
   },
   created() {
-    this.getLocalPosition();
+    this.load();
   },
   methods: {
+    load() {
+      this.getLocalPosition();
+      this.loadBanner();
+      this.loadMessage();
+    },
+    loadBanner() {
+      messagePageAPI({
+        isWeb: false,
+        articleLocation: BANNER_LOCATION,
+        page: 1,
+        pageSize: 5
+      })
+        .then(res => {
+          if (res.data) {
+            this.images = [];
+            res.data.forEach(item => {
+              this.images.push(item.imgUrl);
+            });
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    loadMessage() {
+      messagePageAPI({
+        isWeb: false,
+        top: true,
+        page: 1,
+        pageSize: 1
+      })
+        .then(res => {
+          if (res.data) {
+            this.messageItem = res.data[0];
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     getLocalPosition() {
       getPosition()
         .then(res => {
@@ -187,10 +238,14 @@ export default {
 }
 
 .swipe-content {
-  background: white;
+  .default-image {
+    height: 200px;
+    background: url("../../assets/images/image_bg.jpg");
+  }
 
   img {
     height: 200px;
+    width: 100%;
   }
 }
 

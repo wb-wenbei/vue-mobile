@@ -1,16 +1,16 @@
 <template>
   <div class="message-detail">
-    <div class="common-card">
-      <div class="style-title">环卫大队门口集合</div>
-      <div class="style-sub-title">2020-01-01 08:20</div>
-      <div class="content">
-        样例文案：太的科技（上海太的信息科技有限公司）是国内专业的物联网
-      </div>
+    <div class="style-title">
+      {{ data.articleTitle || "--" }}
     </div>
+    <div class="style-sub-title">{{ data.createTime | formatDateTime }}</div>
+    <div class="content" v-html="data.articleContent"></div>
   </div>
 </template>
 
 <script>
+import { pageAPI } from "@/api/message";
+
 export default {
   name: "detail",
   data() {
@@ -23,7 +23,10 @@ export default {
   },
   methods: {
     loadData() {
-      this.data = {};
+      let id = this.$route.query.id;
+      pageAPI({ isWeb: false, page: 1, pageSize: 10, id: id }).then(res => {
+        this.data = res.data[0];
+      });
     }
   }
 };
@@ -31,16 +34,18 @@ export default {
 
 <style scoped lang="less">
 .message-detail {
-  padding: 0 @padding-md;
+  padding: @padding-md;
 
-  .common-card {
-    & > .style-title {
-      margin-bottom: @margin-xs;
-    }
+  & > .style-title {
+    margin-bottom: @margin-xs;
+  }
 
-    & > .style-sub-title {
-      margin-bottom: @margin-xs;
-    }
+  & > .style-sub-title {
+    margin-bottom: @margin-xs;
+  }
+
+  .content {
+    text-align: left;
   }
 }
 </style>

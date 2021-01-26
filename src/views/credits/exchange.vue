@@ -5,12 +5,14 @@
 </template>
 
 <script>
+import { getGoodsImgAPI } from "@/api/credits";
+
 export default {
   name: "exchange",
   data() {
     return {
       height: "",
-      url: "https://img.yzcdn.cn/vant/apple-2.jpg"
+      url: ""
     };
   },
   mounted() {
@@ -18,11 +20,14 @@ export default {
   },
   methods: {
     loadImage() {
-      let img = new Image();
-      img.src = this.url;
-      img.onload = () => {
-        this.height = parseInt(img.height * (375 / img.width));
-      };
+      getGoodsImgAPI().then(res => {
+        this.url = res;
+        let img = new Image();
+        img.src = this.url;
+        img.onload = () => {
+          this.height = parseInt(img.height * (375 / img.width));
+        };
+      });
     }
   }
 };

@@ -9,8 +9,8 @@
       :error-text="errorText"
       @load="onLoad"
     >
-      <template v-for="item in list">
-        <div :key="item.id" class="list-item">
+      <template v-for="(item, index) in list">
+        <div :key="'page_item_' + index" class="list-item">
           <slot v-bind:item="item">
             <van-cell :title="item.name || '--'" />
           </slot>
@@ -61,7 +61,6 @@ export default {
           if (res) {
             let list = res.data || (Array.isArray(res) ? res : []);
             this.list = [...this.list, ...list];
-            console.log(111, this.list);
             this.page.currentPage = res.page;
             this.page.totalCount = res.totalCount;
             this.page.pageSize = res.pageSize;

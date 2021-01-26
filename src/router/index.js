@@ -78,7 +78,13 @@ const routes = [
         meta: {
           title: "卫情上报",
           code: "",
-          switchHeader: true
+          switchHeader: true,
+          switchType: "eventType",
+          switchMutation: "SET_EVENT_TYPE",
+          switchOptions: [
+            { id: 1, name: "待处理" },
+            { id: 2, name: "已完成" }
+          ]
         }
       },
       {
@@ -160,7 +166,14 @@ const routes = [
           import(/* webpackChunkName: "message" */ "../views/message/message"),
         meta: {
           title: "消息中心",
-          code: ""
+          code: "",
+          switchHeader: true,
+          switchType: "noticeType",
+          switchMutation: "SET_NOTICE_TYPE",
+          switchOptions: [
+            { id: 1, name: "未读" },
+            { id: 2, name: "全部" }
+          ]
         }
       },
       {

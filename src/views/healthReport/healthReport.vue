@@ -5,16 +5,23 @@
         今日健康情况上报
       </van-button>
     </div>
-    <div class="style-title report-title">历史记录</div>
     <page-list :api="pageAPI" :params="params">
       <template #default="{ item }">
         <div class="common-card">
-          <div class="item-title">— {{ item.time || "2020-01-02" }} —</div>
+          <div class="item-title">{{ item.date | formatDate }}</div>
           <div class="item-list">
-            <div v-for="l in list" :key="l.id" class="list-item">
+            <div
+              v-for="(l, index) in item.list"
+              :key="index"
+              class="list-item"
+              :class="'status-' + (l.answer[0] ? l.answer[0].status : '99')"
+            >
               <div class="point"></div>
               <div class="title">{{ l.title }}</div>
-              <div class="result">{{ item[l.key] || "正常" }}</div>
+              <div class="result">
+                <span v-if="l.answer[0]">{{ l.answer[0].name }}</span>
+                <span v-else>--</span>
+              </div>
             </div>
           </div>
         </div>
@@ -67,7 +74,7 @@ export default {
 
   .common-card {
     .item-title {
-      text-align: center;
+      text-align: left;
       font-weight: bold;
       margin-bottom: @margin-xs;
     }
@@ -95,6 +102,24 @@ export default {
 
       .result {
         color: @blue;
+      }
+    }
+
+    .status-2 {
+      .point,
+      .result {
+        color: @red;
+      }
+    }
+
+    .status-99 {
+      .result {
+        color: @gray-6;
+      }
+    }
+    .status-99 {
+      .point {
+        background: @gray-6;
       }
     }
   }

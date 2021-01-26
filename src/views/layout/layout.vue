@@ -2,7 +2,7 @@
   <div class="layout">
     <home-header class="home-header" :title="title" :leftArrow="leftArrow">
       <template v-if="switchHeader" v-slot:title>
-        <header-switch v-model="eventType"></header-switch>
+        <header-switch v-model="type" :options="switchOptions"></header-switch>
       </template>
     </home-header>
     <div
@@ -33,9 +33,11 @@ export default {
       active: "",
       leftArrow: true,
       switchHeader: false,
+      switchOptions: null,
+      switchMutation: null,
       clientWidth: 375,
       minWidth: 50,
-      eventType: "",
+      type: "",
       touch: {}
     };
   },
@@ -47,15 +49,19 @@ export default {
         this.active = v.name || "other";
         this.title = v.meta.title || "";
         this.switchHeader = v.meta.switchHeader || false;
+        if (v.meta.switchHeader) {
+          this.switchOptions = v.meta.switchOptions;
+          this.switchMutation = v.meta.switchMutation;
+          this.type = this.$store.state[v.meta.switchType];
+        }
         this.leftArrow = v.name !== "Home";
       }
     },
-    eventType(v) {
-      this.$store.commit("SET_EVENT_TYPE", v);
+    type(v) {
+      if (v) {
+        this.$store.commit(this.switchMutation || "SET_EVENT_TYPE", v);
+      }
     }
-  },
-  created() {
-    this.eventType = this.$store.state.eventType;
   },
   mounted() {
     this.clientWidth = this.$refs["layout-content"].clientWidth;

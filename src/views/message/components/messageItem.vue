@@ -1,15 +1,15 @@
 <template>
   <div class="common-card" @click="rowClick(data)">
-    <div class="item-image">
-      <svg-icon class="image-icon" icon-class="jiaosequanxian" />
-    </div>
     <div class="item-content">
       <div class="content-title">
-        <div class="style-title">{{ data.title || "环卫大队门口集合" }}</div>
-        <div class="style-sub-text">{{ data.time | formatDateTime }}</div>
+        <div class="item-image"></div>
+        <div class="style-title">
+          {{ data.articleTitle || "环卫大队门口集合" }}
+        </div>
+        <div class="style-sub-text">{{ data.createTime | formatDateTime }}</div>
       </div>
       <div class="content-detail">
-        {{ data.content || "环卫大队门口集合，各位同事今天下午有事通知" }}
+        {{ data.description || "环卫大队门口集合，各位同事今天下午有事通知" }}
       </div>
     </div>
     <div class="item-icon" @click.stop="iconClick(data)">
@@ -43,17 +43,11 @@ export default {
   align-items: center;
 
   .item-image {
-    height: 44px;
-    width: 44px;
-    padding: @padding-xs;
-    border-radius: @border-radius-lg;
-    background: @gradient-orange;
-
-    .image-icon {
-      width: 100%;
-      height: 100%;
-      color: white;
-    }
+    height: 18px;
+    width: 18px;
+    background: url("../../../assets/icons/通知@3x.png") center / cover
+      no-repeat;
+    margin-right: @margin-base;
   }
 
   .item-content {
@@ -81,16 +75,17 @@ export default {
     .content-detail {
       font-size: @font-size-sm;
       color: @gray-6;
+      text-align: left;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      padding-top: @padding-base;
+      padding-top: @padding-xs;
     }
   }
 
   .item-icon {
     .image-icon {
-      font-size: 20px;
+      font-size: 18px;
       color: @gray-6;
     }
   }
