@@ -24,6 +24,8 @@
 <script>
 import axios from "axios";
 
+const BASE_URL = process.env.VUE_APP_BASE_API || "";
+
 export default {
   name: "uploadImg",
   props: {
@@ -108,7 +110,7 @@ export default {
       };
       return new Promise((resolve, reject) => {
         axios
-          .post(this.url, params, config)
+          .post(BASE_URL + this.url, params, config)
           .then(res => {
             if (res && res.data && res.data.code === 200) {
               resolve(res.data);
