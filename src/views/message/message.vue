@@ -22,12 +22,14 @@ export default {
       params: { isWeb: false }
     };
   },
-  "$store.state.noticeType": {
-    immediate: true,
-    handler(v) {
-      this.params.isQueryNotRead = v === 1;
-      if (this.$refs["page-list"]) {
-        this.$refs["page-list"].onRefresh();
+  watch: {
+    "$store.state.noticeType": {
+      immediate: true,
+      handler(v) {
+        this.params.isQueryNotRead = v === 1;
+        if (this.$refs["page-list"]) {
+          this.$refs["page-list"].onRefresh();
+        }
       }
     }
   },

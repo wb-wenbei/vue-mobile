@@ -9,12 +9,13 @@
 </template>
 
 <script>
-import { pageAPI } from "@/api/message";
+import { pageAPI, articleIsReadAPI } from "@/api/message";
 
 export default {
   name: "detail",
   data() {
     return {
+      readTimeout: null,
       data: {}
     };
   },
@@ -26,7 +27,19 @@ export default {
       let id = this.$route.query.id;
       pageAPI({ isWeb: false, page: 1, pageSize: 10, id: id }).then(res => {
         this.data = res.data[0];
+        this.isRead();
       });
+    },
+    isRead() {
+      this.readTimeout = setTimeout(() => {
+        let id = this.$route.query.id;
+        articleIsReadAPI({ articleId: id });
+      }, 3000);
+    }
+  },
+  beforeDestroy() {
+    if (this.readTimeout) {
+      clearTimeout(this.readTimeout);
     }
   }
 };

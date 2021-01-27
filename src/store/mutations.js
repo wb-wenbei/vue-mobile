@@ -57,14 +57,12 @@ const mutations = {
     state.userInfo = {};
   },
   SET_EVENT_TYPE: (state, eventType) => {
-    console.log("set_event_type",eventType)
     state.eventType = eventType;
   },
   SET_POSITION: (state, position) => {
     state.position = position;
   },
   SET_NOTICE_TYPE: (state, noticeType) => {
-    console.log("set_notice_type",noticeType)
     state.noticeType = noticeType;
   }
 };

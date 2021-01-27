@@ -7,7 +7,7 @@
         lazy-load
         round
         fit="cover"
-        src="https://img.yzcdn.cn/vant/cat.jpeg"
+        :src="userPhoto"
       />
       <div class="style-title">{{ userInfo.userName }}</div>
     </div>
@@ -29,7 +29,8 @@ export default {
   name: "Mine",
   data() {
     return {
-      userInfo: this.$store.state.userInfo
+      userInfo: this.$store.state.userInfo,
+      userPhoto: require("../../assets/images/user_photo.png")
     };
   },
   methods: {
@@ -49,8 +50,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: @padding-md;
   background: white;
+  padding: 60px @padding-md;
 
   .user-info {
     .style-title {

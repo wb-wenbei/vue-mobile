@@ -28,7 +28,8 @@ export default {
     params: { type: Object },
     pageSize: { type: Number },
     finishedText: { type: String, default: "没有更多了" },
-    errorText: { type: String, default: "加载失败，请重试！" }
+    errorText: { type: String, default: "加载失败，请重试！" },
+    dataFilter: { type: Function }
   },
   data() {
     return {
@@ -61,6 +62,9 @@ export default {
           if (res) {
             let list = res.data || (Array.isArray(res) ? res : []);
             this.list = [...this.list, ...list];
+            if (this.dataFilter && typeof this.dataFilter === "function") {
+              this.list = this.dataFilter(this.list);
+            }
             this.page.currentPage = res.page;
             this.page.totalCount = res.totalCount;
             this.page.pageSize = res.pageSize;
@@ -73,6 +77,7 @@ export default {
           } else {
             this.finished = true;
           }
+
         })
         .catch(() => {
           this.finished = true;

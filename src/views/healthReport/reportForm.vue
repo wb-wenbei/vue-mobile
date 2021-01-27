@@ -24,14 +24,26 @@
       <div class="message" v-else>{{ message }}</div>
       <div class="form-item">
         <van-button
+          v-if="!disabled"
           block
-          class="default-btn border-radius-md"
+          round
+          class="default-btn"
           native-type="submit"
           :loading="loading"
           :disabled="disabled"
           loading-type="spinner"
         >
           上报
+        </van-button>
+        <van-button
+          v-else
+          block
+          round
+          class="default-btn"
+          native-type="button"
+          @click="goBack"
+        >
+          返回
         </van-button>
       </div>
     </van-form>
@@ -52,7 +64,7 @@ export default {
     return {
       loading: false,
       disabled: true,
-      message: "你今天已经上报信息了",
+      message: "您今天已经上报过信息了",
       list: []
     };
   },
@@ -108,6 +120,9 @@ export default {
         }
       });
       return result;
+    },
+    goBack() {
+      this.$router.back();
     }
   }
 };

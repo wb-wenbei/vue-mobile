@@ -24,20 +24,26 @@
         }}
       </div>
     </div>
-    <div class="common-card">
-      <page-list :api="pageAPI" :params="params">
+    <div class="credit-card">
+      <page-list :api="pageAPI" :params="params" :dataFilter="dataFilter">
         <template #default="{ item }">
-          <div class="credit-item">
+          <div class="credit-item-date" v-if="item.type === 'date'">
+            {{ item.date | formatDate }}
+          </div>
+          <div v-else class="credit-item">
             <div class="item-header">
               <div>
                 {{ item.createTime | formatTime }}
                 {{ item.integralTypeName || "--" }}
               </div>
-              <div class="header-right">+15积分</div>
+              <div class="header-right">
+                <span v-if="item.integralChange > 0">+</span
+                >{{ item.integralChange }}积分
+              </div>
             </div>
-            <div class="item-date style-sub-text">
+            <!--<div class="item-date style-sub-text">
               {{ item.createTime | formatDate }}
-            </div>
+            </div>-->
           </div>
         </template>
       </page-list>
@@ -48,6 +54,7 @@
 <script>
 import { pageAPI, getIntegralSumAPI } from "../../api/credits";
 import PageList from "@/components/pageList";
+import { toDateFormat } from "@/filters/timeFormat";
 
 export default {
   name: "Credits",
@@ -75,6 +82,32 @@ export default {
     },
     toExchange() {
       this.$router.push({ path: "/credits/exchange" });
+    },
+    dataFilter(list) {
+      for (let index = 0; index < list.length - 1; index++) {
+        if (list[index].type !== "date") {
+          if (index === 0) {
+            list.unshift({
+              type: "date",
+              id: "date_" + index,
+              date: list[index].createTime
+            });
+            index++;
+          }
+          if (
+            toDateFormat(list[index].createTime) !==
+            toDateFormat(list[index + 1].createTime)
+          ) {
+            list.splice(index, 0, {
+              type: "date",
+              id: "date_" + index,
+              date: list[index + 1].createTime
+            });
+            index++;
+          }
+        }
+      }
+      return list;
     }
   }
 };
@@ -135,11 +168,22 @@ export default {
     }
   }
 
-  .common-card {
+  .credit-card {
     margin: @margin-sm @margin-md;
+    background: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+
+    .credit-item-date {
+      padding: @padding-sm @padding-md;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.05);
+      color: @gray-7;
+      font-weight: bold;
+    }
 
     .credit-item {
-      margin-bottom: @margin-sm;
+      border-top: 1px solid @gray-3;
+      padding: @padding-xs @padding-md;
 
       .item-header {
         display: flex;
