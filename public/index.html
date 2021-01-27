@@ -7,7 +7,7 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>员工关怀</title>
     <script src="//g.alicdn.com/fdilab/lib3rd/viewport-units-buggyfill/0.6.2/??viewport-units-buggyfill.hacks.min.js,viewport-units-buggyfill.min.js"></script>
-    <script src="https://webapi.amap.com/maps?v=1.4.15&key=ec0f8fe9bdd332f3811aecab234d3912&plugin=AMap.Geocoder,AMap.MarkerClusterer,AMap.Geolocation"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.14&key=ec0f8fe9bdd332f3811aecab234d3912&plugin=AMap.Geocoder,AMap.MarkerClusterer,AMap.Geolocation"></script>
   </head>
   <body>
     <noscript>
@@ -31,11 +31,10 @@
       let first = null;
       plus.key.addEventListener('backbutton', function() {
         webview.canBack(function(e) {
-          if (e.canBack) {
+          let href = window.location.href;
+          if (e.canBack && href.indexOf("/home") === -1) {
             webview.back();
           } else {
-            //webview.close(); //hide,quit
-            //plus.runtime.quit();
             //首页返回键处理
             //处理逻辑：1秒内，连续两次按返回键，则退出应用；
             //首次按键，提示‘再按一次退出应用’

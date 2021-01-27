@@ -120,6 +120,7 @@ export default {
       messagePageAPI({
         isWeb: false,
         articleLocation: BANNER_LOCATION,
+        top: true,
         page: 1,
         pageSize: 5
       })
@@ -138,7 +139,6 @@ export default {
     loadMessage() {
       messagePageAPI({
         isWeb: false,
-        top: true,
         page: 1,
         pageSize: 1
       })

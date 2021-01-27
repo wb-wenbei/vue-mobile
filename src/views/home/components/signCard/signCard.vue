@@ -46,7 +46,9 @@
             <van-button
               class="default-btn"
               size="small"
+              :loading="loading"
               :disabled="disabled"
+              loading-type="spinner"
               @click="onSign"
             >
               签到
@@ -97,11 +99,12 @@ export default {
   data() {
     return {
       signPoint: {
-        totalIntegral: 110,
-        canGet: 15,
-        hasGet: 10
+        totalIntegral: 0,
+        usableIntegral: 0,
+        haveAccessToIntegral: 0
       },
       disabled: true,
+      loading: true,
       tips: "",
       signPopover: false,
       showSuccess: false,
@@ -152,32 +155,29 @@ export default {
       }
     }
   },
-  created() {
-    this.loadData();
-  },
   methods: {
-    loadData() {
-      /* getIntegralSumAPI().then(res => {
-        this.signPoint = res;
-      });*/
-    },
     allowSign() {
-      allowSignInAPI(this.position).then(res => {
-        this.signPoint = res;
-        switch (res.signInStatus) {
-          case 1:
-            this.disabled = false;
-            break;
-          case 2:
-            this.disabled = true;
-            this.tips = "无法签到！";
-            break;
-          case 3:
-            this.disabled = true;
-            this.tips = "已签到！";
-            break;
-        }
-      });
+      this.loading = true;
+      allowSignInAPI(this.position)
+        .then(res => {
+          this.signPoint = res;
+          switch (res.signInStatus) {
+            case 1:
+              this.disabled = false;
+              break;
+            case 2:
+              this.disabled = true;
+              this.tips = "无法签到！";
+              break;
+            case 3:
+              this.disabled = true;
+              this.tips = "已签到！";
+              break;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     onSign() {
       signInAPI(this.position)
@@ -185,7 +185,7 @@ export default {
           this.showSuccess = true;
         })
         .catch(err => {
-          this.$toast.fail("签到失败！");
+          this.$toast.fail("签到失败：" + err);
           console.log(err);
         });
     }

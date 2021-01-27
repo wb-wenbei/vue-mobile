@@ -14,7 +14,7 @@
     <van-popup v-model="mapShow" :style="{ height: '100%', width: '100%' }">
       <div class="map-content">
         <div class="header"></div>
-        <div class="map" id="map"></div>
+        <div class="map" id="GDMap"></div>
         <van-button
           class="btn"
           size="small"
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     loadMap() {
-      this.map = new AMap.Map("map", {
+      this.map = new AMap.Map("GDMap", {
         zoom: 15,
         resizeEnable: true
       });
@@ -91,9 +91,12 @@ export default {
       this.map.on("mapmove", this.mapMove);
       this.map.on("moveend", this.mapMoveEnd);
 
-      if (this.location) {
-        this.getPosition();
-      }
+      this.map.on("complete", () => {
+        console.log("map-complete");
+        if (this.location) {
+          this.getPosition();
+        }
+      });
     },
     getPosition() {
       AMap.plugin("AMap.Geolocation", () => {

@@ -14,9 +14,9 @@
       />
     </div>
 
-    <div class="common-card padding-0">
+    <div v-if="detail.workDate" class="common-card padding-0">
       <div class="card-title style-title">
-        {{ detail.workDate | formatDate }}（{{ detail.employeeName }}）
+        {{ detail.workDate | formatDate }}（{{ detail.employeeName || '--' }}）
       </div>
       <div class="card-item">
         <span>排班状态：</span
@@ -40,9 +40,7 @@ export default {
     return {
       show: false,
       minDate: new Date(0),
-      detail: {
-        title: "17号排班"
-      },
+      detail: {},
       scheduleType: {},
       scheduleData: []
     };
@@ -52,7 +50,13 @@ export default {
   },
   methods: {
     load() {
-      let params = { employeeIds: 34501, pageSize: 100, page: 1 };
+      let employeeId = this.$store.state.userInfo.employeeId;
+      // let employeeId = 34501;
+      if (!employeeId) {
+        this.$toast("本账号未关联职员，没有排班信息！");
+        return;
+      }
+      let params = { employeeIds: employeeId, pageSize: 100, page: 1 };
       workScheduleV3API(params)
         .then(res => {
           this.scheduleData = res.data || [];
@@ -66,6 +70,7 @@ export default {
         });
     },
     selectDate(day) {
+      this.detail = {}
       let dayTime = new Date(new Date(day).toLocaleDateString()).getTime();
       this.scheduleData.forEach(item => {
         if (item.workDate === dayTime) {
