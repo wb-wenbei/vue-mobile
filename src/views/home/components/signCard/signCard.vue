@@ -88,6 +88,7 @@
 import { allowSignInAPI, signInAPI } from "@/api/credits";
 
 import { toDateFormat } from "@/filters/timeFormat";
+
 const ONE_DAY = 1000 * 3600 * 24;
 
 export default {
@@ -180,7 +181,7 @@ export default {
         });
     },
     onSign() {
-      signInAPI(this.position)
+      signInAPI({ location: this.position })
         .then(() => {
           this.showSuccess = true;
         })
@@ -217,6 +218,7 @@ export default {
     right: calc(50% + 5px);
     background: @blue;
   }
+
   .sign-item:nth-child(1n + 4)::before {
     background: @gray-6;
   }
