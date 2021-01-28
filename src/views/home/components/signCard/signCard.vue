@@ -184,6 +184,7 @@ export default {
       signInAPI({ location: this.position })
         .then(() => {
           this.showSuccess = true;
+          this.allowSign();
         })
         .catch(err => {
           this.$toast.fail("签到失败：" + err);
