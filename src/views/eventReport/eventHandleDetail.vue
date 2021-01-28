@@ -47,7 +47,7 @@
           label="原因"
           type="textarea"
           placeholder="不能处理原因"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          :rules="[{ required: true, message: '请填不能处理原因' }]"
         />
         <div style="margin: 16px;">
           <van-button round block type="primary" native-type="submit">

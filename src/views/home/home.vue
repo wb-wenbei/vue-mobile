@@ -16,10 +16,10 @@
         ></message-item>
         <div class="common-card padding-0" style="min-height: 126px">
           <weather-card></weather-card>
-          <div class="tip-content">
+          <!--<div class="tip-content">
             <span class="tip-title">小贴士：</span
             >{{ userInfo.userName }}您好！工作忙碌，注意适时休息。
-          </div>
+          </div>-->
         </div>
         <div class="common-card padding-0">
           <div class="card-title style-title">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import WeatherCard from "@/components/weather/weatherCard";
+import WeatherCard from "@/components/weather/XZWeather";
 import SignCard from "./components/signCard/signCard";
 import MessageItem from "@/views/message/components/messageItem";
 import { getPosition } from "../../components/map/config";
@@ -206,7 +206,7 @@ export default {
 
     .tip-content {
       width: 100%;
-      padding: 24px 8px 8px;
+      padding: 24px 8px 4px;
       position: absolute;
       bottom: 0;
       color: white;

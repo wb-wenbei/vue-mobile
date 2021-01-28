@@ -29,6 +29,21 @@ export default {
         "https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0";
       document.getElementsByTagName("head")[0].appendChild(script);
     }
+  },
+  beforeDestroy() {
+    let link = "widget.heweather.net";
+    let scripts = document.getElementsByTagName("script");
+    for (let i = 0; i < scripts.length; i++) {
+      if (scripts[i] && scripts[i].src && scripts[i].src.indexOf(link) !== -1) {
+        scripts[i].parentNode.removeChild(scripts[i]);
+      }
+    }
+    let links = document.getElementsByTagName("link");
+    for (let i = 0; i < links.length; i++) {
+      if (links[i] && links[i].href && links[i].href.indexOf(link) !== -1) {
+        links[i].parentNode.removeChild(links[i]);
+      }
+    }
   }
 };
 </script>

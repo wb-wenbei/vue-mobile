@@ -12,7 +12,9 @@
       @touchend="touchend"
     >
       <transition name="fade-transform" mode="out-in">
-        <router-view />
+        <keep-alive :include="include">
+          <router-view />
+        </keep-alive>
       </transition>
     </div>
     <home-footer :active="active"></home-footer>
@@ -38,7 +40,8 @@ export default {
       clientWidth: 375,
       minWidth: 50,
       type: "",
-      touch: {}
+      touch: {},
+      include: [""]
     };
   },
   watch: {
@@ -78,7 +81,7 @@ export default {
       this.touch.endTime = e.timeStamp;
       this.touch.endClientX = e.changedTouches[0].clientX;
       this.touch.endClientY = e.changedTouches[0].clientY;
-      this.checkTouch();
+      // this.checkTouch();
     },
     checkTouch() {
       //首页不支持滑动回退
