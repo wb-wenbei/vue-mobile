@@ -41,7 +41,7 @@ export default {
       minWidth: 50,
       type: "",
       touch: {},
-      include: [""]
+      include: ["Home"]
     };
   },
   watch: {
