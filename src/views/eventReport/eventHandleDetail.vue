@@ -219,7 +219,7 @@ export default {
           .then(() => {
             this.content = "";
             this.$toast.success(`提交成功！`);
-            this.$router.push({ name: "issue" });
+            this.$router.back();
           })
           .catch(err => {
             this.$toast.fail(err);
@@ -233,7 +233,7 @@ export default {
       createIssuePostponeAPI(this.form)
         .then(() => {
           this.$toast.success(`申请成功，待审核中...`);
-          this.$router.push("/issue");
+          this.$router.back();
         })
         .catch(err => {
           console.log(err);
