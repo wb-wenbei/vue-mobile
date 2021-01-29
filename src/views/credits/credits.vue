@@ -14,14 +14,16 @@
       <div class="card-status">
         <div class="button">
           <div class="button-content">
-            {{ detail.signInNumber > 0 ? "已签到" : "未签到" }}
+            {{ detail.isSignIn === 1 ? "已签到" : "未签到" }}
           </div>
         </div>
       </div>
       <div class="card-description">
-        今日{{ detail.signInNumber > 0 ? "已签到" : "未签到" }}， 目前项目排名{{
-          detail.rank
-        }}
+        今日{{ detail.isSignIn === 1 ? "已签到" : "未签到" }}，
+        <span v-if="detail.signInNumber > 0">
+          还可签到{{ detail.signInNumber }}次，
+        </span>
+        目前项目排名{{ detail.rank }}
       </div>
     </div>
     <div class="credit-card">
@@ -94,11 +96,15 @@ export default {
             });
             index++;
           }
+          console.log(
+            toDateFormat(list[index].createTime),
+            toDateFormat(list[index + 1].createTime)
+          );
           if (
             toDateFormat(list[index].createTime) !==
             toDateFormat(list[index + 1].createTime)
           ) {
-            list.splice(index, 0, {
+            list.splice(index + 1, 0, {
               type: "date",
               id: "date_" + index,
               date: list[index + 1].createTime

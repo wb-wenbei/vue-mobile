@@ -14,12 +14,8 @@
           iconClass="ellipsis-v"
           @iconClick="messageClick"
         ></message-item>
-        <div class="common-card padding-0" style="min-height: 126px">
-          <weather-card></weather-card>
-          <!--<div class="tip-content">
-            <span class="tip-title">小贴士：</span
-            >{{ userInfo.userName }}您好！工作忙碌，注意适时休息。
-          </div>-->
+        <div class="common-card padding-0">
+          <weather-card :location="location"></weather-card>
         </div>
         <div class="common-card padding-0">
           <div class="card-title style-title">
@@ -53,7 +49,7 @@
 </template>
 
 <script>
-import WeatherCard from "@/components/weather/XZWeather";
+import WeatherCard from "@/components/weather/weather";
 import SignCard from "./components/signCard/signCard";
 import MessageItem from "@/views/message/components/messageItem";
 import { getPosition } from "../../components/map/config";
@@ -69,7 +65,6 @@ export default {
   data() {
     return {
       title: "中航环卫",
-      userInfo: this.$store.state.userInfo,
       messageItem: {},
       loading: false,
       weatherShow: false,
@@ -106,6 +101,14 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    location() {
+      if (this.position.lng && this.position.lat) {
+        return this.position.lng + "," + this.position.lat;
+      }
+      return "";
+    }
   },
   created() {
     this.load();
@@ -202,22 +205,6 @@ export default {
       align-items: center;
       text-align: left;
       padding: @padding-md;
-    }
-
-    .tip-content {
-      width: 100%;
-      padding: 24px 8px 4px;
-      position: absolute;
-      bottom: 0;
-      color: white;
-      text-align: left;
-
-      .tip-title {
-        font-weight: bold;
-        background-image: @gradient-green;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
     }
 
     .menu-content {

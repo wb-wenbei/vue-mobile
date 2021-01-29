@@ -9,3 +9,12 @@ export const workScheduleV3API = params => {
     params
   });
 };
+
+// 获取班次信息
+export const getWorkScheduleAPI = params => {
+  return http({
+    method: "GET",
+    url: `/api-customer/staff-care/integral/getWorkSchedule`,
+    params
+  });
+};
