@@ -119,7 +119,7 @@ export default {
             let data =
               res.workScheduleDetailResponse.workShiftDto.workShiftPeriods;
             this.detail.workSchedule = [];
-            let baseTimestamp = 1000 * 3600 * 8;
+            let baseTimestamp = 0;
             data.forEach(item => {
               this.detail.workSchedule.push({
                 timeRange: [

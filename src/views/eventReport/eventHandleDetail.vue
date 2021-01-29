@@ -63,32 +63,34 @@
           (issue.ownerId == null && issue.issueOrgId == orgId)
       "
     >
-      <van-button round @click="showDialog" class="report-btn unableHandle"
+      <template v-if="issue.status === 1">
+        <van-button round @click="showDialog" class="report-btn unableHandle"
         >不能处理</van-button
-      >
-      <!--<van-button
-        round
-        @click.stop="applyDelay(issue)"
-        v-if="issue.deadLine > new Date().getTime()"
-        >延时申请</van-button
-      >-->
-      <van-button
-        v-if="distance > 100"
-        disabled="disabled"
-        round
-        type="primary"
-        @click="goToHandle(issue.id)"
-        class="report-btn"
+        >
+        <!--<van-button
+          round
+          @click.stop="applyDelay(issue)"
+          v-if="issue.deadLine > new Date().getTime()"
+          >延时申请</van-button
+        >-->
+        <van-button
+          v-if="distance > 100"
+          disabled="disabled"
+          round
+          type="primary"
+          @click="goToHandle(issue.id)"
+          class="report-btn"
         >去处理</van-button
-      >
-      <van-button
-        v-else
-        round
-        type="primary"
-        @click="goToHandle(issue.id)"
-        class="report-btn"
+        >
+        <van-button
+          v-else
+          round
+          type="primary"
+          @click="goToHandle(issue.id)"
+          class="report-btn"
         >去处理</van-button
-      >
+        >
+      </template>
     </div>
     <!-- 延时弹窗 -->
     <van-popup

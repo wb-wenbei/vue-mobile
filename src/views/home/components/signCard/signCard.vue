@@ -168,11 +168,11 @@ export default {
               break;
             case 2:
               this.disabled = true;
-              this.tips = "无法签到！";
+              this.tips = res.description;
               break;
             case 3:
               this.disabled = true;
-              this.tips = "已签到！";
+              this.tips = res.description;
               break;
           }
         })
