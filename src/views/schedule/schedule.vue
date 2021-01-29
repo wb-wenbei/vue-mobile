@@ -1,18 +1,16 @@
 <template>
   <div class="schedule-content">
-    <div class="date-content">
-      <van-calendar
-        v-if="show"
-        :poppable="false"
-        :show-confirm="false"
-        :show-mark="true"
-        :min-date="minDate"
-        :row-height="48"
-        :style="{ height: '370px' }"
-        :formatter="formatter"
-        @select="selectDate"
-      />
-    </div>
+    <van-calendar
+      v-if="show"
+      :poppable="false"
+      :show-confirm="false"
+      :show-mark="true"
+      :min-date="minDate"
+      :row-height="48"
+      :style="{ height: '370px' }"
+      :formatter="formatter"
+      @select="selectDate"
+    />
 
     <div v-if="detail.workDate" class="common-card padding-0">
       <div class="card-title style-title">
@@ -165,11 +163,7 @@ export default {
 <style scoped lang="less">
 .schedule-content {
   padding: 0 @padding-md;
-
-  .date-content {
-    height: 370px;
-    background: white;
-  }
+  border-radius: @border-radius-md;
 
   .card-title {
     display: flex;

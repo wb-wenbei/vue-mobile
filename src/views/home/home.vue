@@ -69,7 +69,7 @@ export default {
       loading: false,
       weatherShow: false,
       position: {},
-      images: ["", ""],
+      images: [""],
       menus: [
         {
           id: 1,
@@ -129,10 +129,14 @@ export default {
       })
         .then(res => {
           if (res.data) {
-            this.images = [];
-            res.data.forEach(item => {
-              this.images.push(item.imgUrl);
-            });
+            if (res.data.length) {
+              this.images = [];
+              res.data.forEach(item => {
+                this.images.push(item.imgUrl);
+              });
+            } else {
+              this.images = [""];
+            }
           }
         })
         .finally(() => {
