@@ -96,13 +96,17 @@ export default {
             });
             index++;
           }
-          console.log(
+          /*console.log(
+            list[index],
+            list[index + 1],
             toDateFormat(list[index].createTime),
             toDateFormat(list[index + 1].createTime)
-          );
+          );*/
           if (
+            list[index].createTime &&
+            list[index + 1].createTime &&
             toDateFormat(list[index].createTime) !==
-            toDateFormat(list[index + 1].createTime)
+              toDateFormat(list[index + 1].createTime)
           ) {
             list.splice(index + 1, 0, {
               type: "date",
