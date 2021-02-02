@@ -68,6 +68,7 @@ export default {
       messageItem: {},
       loading: false,
       weatherShow: false,
+      positionTimeout: null,
       position: {},
       images: [""],
       menus: [
@@ -169,7 +170,10 @@ export default {
         })
         .finally(() => {
           if (!this.position.lng && !this.position.lat) {
-            setTimeout(() => {
+            if (this.positionTimeout) {
+              clearTimeout(this.positionTimeout);
+            }
+            this.positionTimeout = setTimeout(() => {
               this.getLocalPosition();
             }, POSITION_TIME);
           }

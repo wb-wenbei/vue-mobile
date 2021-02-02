@@ -60,5 +60,11 @@ export default {
   .content {
     text-align: left;
   }
+
+  ::v-deep {
+    img {
+      width: 100%;
+    }
+  }
 }
 </style>
