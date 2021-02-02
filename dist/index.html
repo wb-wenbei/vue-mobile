@@ -1,4 +1,44 @@
-<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="icon" href="favicon.ico"><title>员工关怀</title><script src="//g.alicdn.com/fdilab/lib3rd/viewport-units-buggyfill/0.6.2/??viewport-units-buggyfill.hacks.min.js,viewport-units-buggyfill.min.js"></script><script src="https://webapi.amap.com/maps?v=1.4.14&key=ec0f8fe9bdd332f3811aecab234d3912&plugin=AMap.Geocoder,AMap.MarkerClusterer,AMap.Geolocation"></script><link href="static/css/app.3d944b88.css" rel="preload" as="style"><link href="static/css/chunk-vendors.ef33862a.css" rel="preload" as="style"><link href="static/js/app.c45c89fd.js" rel="preload" as="script"><link href="static/js/chunk-vendors.b54a197e.js" rel="preload" as="script"><link href="static/css/chunk-vendors.ef33862a.css" rel="stylesheet"><link href="static/css/app.3d944b88.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but employee-care doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script src="static/js/chunk-vendors.b54a197e.js"></script><script src="static/js/app.c45c89fd.js"></script></body><script>// vw兼容性处理viewport-units-buggyfill
+<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="icon" href="favicon.ico"><title>员工关怀</title><script src="//g.alicdn.com/fdilab/lib3rd/viewport-units-buggyfill/0.6.2/??viewport-units-buggyfill.hacks.min.js,viewport-units-buggyfill.min.js"></script><script src="https://webapi.amap.com/maps?v=1.4.14&key=ec0f8fe9bdd332f3811aecab234d3912&plugin=AMap.Geocoder,AMap.MarkerClusterer,AMap.Geolocation"></script><link href="static/css/app.bd76aa95.css" rel="preload" as="style"><link href="static/css/chunk-vendors.ef33862a.css" rel="preload" as="style"><link href="static/js/app.eedb3a4d.js" rel="preload" as="script"><link href="static/js/chunk-vendors.b54a197e.js" rel="preload" as="script"><link href="static/css/chunk-vendors.ef33862a.css" rel="stylesheet"><link href="static/css/app.bd76aa95.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but employee-care doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script src="static/js/chunk-vendors.b54a197e.js"></script><script src="static/js/app.eedb3a4d.js"></script></body><script>// vw兼容性处理viewport-units-buggyfill
     window.onload = function () {
       window.viewportUnitsBuggyfill.init({ hacks: window.viewportUnitsBuggyfillHacks });
-    }</script></html>
+    }
+
+    //解决app返回键直接退出应用而不是返回上一步问题
+    document.addEventListener('plusready', function() {
+      if(!plus){
+        return
+      }
+      let webview = plus.webview.currentWebview();
+      let first = null;
+      plus.key.addEventListener('backbutton', function() {
+        webview.canBack(function(e) {
+          let href = window.location.href;
+          if (e.canBack && href.indexOf("/home") === -1) {
+            webview.back();
+          } else {
+            //首页返回键处理
+            //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+            //首次按键，提示‘再按一次退出应用’
+            if (!first) {
+              first = new Date().getTime();
+              // toast('双击返回键退出应用'); //调用自己写的吐丝提示 函数
+              console.log('再按一次退出应用');
+              plus.nativeUI.toast("双击退出", {
+                duration: 'short'
+              }); //通过H5+ API调用Android 上的toast 提示框
+              setTimeout(function() {
+                first = null;
+              }, 1000);
+            } else {
+              if (new Date().getTime() - first < 1400) {
+                plus.runtime.quit();
+              }
+            }
+          }
+        })
+      }, false);
+      /*沉浸式延伸的问题:状态栏的高度被忽略*/
+      // plus.webview.currentWebview().setStyle({
+      //  statusbar:{background:'#ff0000'},top:0,bottom: 0
+      // });
+    });</script></html>
