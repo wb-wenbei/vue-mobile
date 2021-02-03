@@ -2,8 +2,8 @@
   <van-pull-refresh v-model="loading" @refresh="load">
     <div class="home-content">
       <van-swipe class="swipe-content" :autoplay="3000">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img v-if="image" v-lazy="image" />
+        <van-swipe-item v-for="(item, index) in images" :key="index">
+          <img v-if="item.imgUrl" v-lazy="item.imgUrl" @click.stop="messageDetailClick(item)"/>
           <div v-else class="default-image"></div>
         </van-swipe-item>
       </van-swipe>
@@ -133,10 +133,10 @@ export default {
             if (res.data.length) {
               this.images = [];
               res.data.forEach(item => {
-                this.images.push(item.imgUrl);
+                this.images.push(item);
               });
             } else {
-              this.images = [""];
+              this.images = [{}];
             }
           }
         })
@@ -184,6 +184,9 @@ export default {
     },
     messageClick() {
       this.$router.push({ path: "/message" });
+    },
+    messageDetailClick(data) {
+      this.$router.push({ path: "/message/detail", query: { id: data.id } });
     }
   }
 };
